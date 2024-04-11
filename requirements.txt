@@ -1,0 +1,7 @@
+numpy
+pandas
+pandas_datareader
+pillow
+matplotlib
+yfinance
+streamlit
