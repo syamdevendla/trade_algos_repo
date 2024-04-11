@@ -10,7 +10,7 @@ class MomentumSignal:
     def __init__(self, time_period):
         self.time_period = time_period
 
-    def generateSignal(self, instrument, start_date, end_date):
+    def generateSignal(self, df):
         print("entered generateSignal")
 
         # gld = pdr.get_data_yahoo('GLD')
@@ -24,11 +24,12 @@ class MomentumSignal:
         # end = dt.datetime(2024, 1, 1)
 
         # Read Stock Price Data
-        gld = yf.download(instrument, start_date, end_date)
+        #gld = yf.download(instrument, start_date, end_date)
+        gld = df
 
         day = np.arange(1, len(gld) + 1)
         gld['day'] = day
-        gld.drop(columns=['Adj Close'], inplace=True)
+        #gld.drop(columns=['Adj Close'], inplace=True)
         gld = gld[['day', 'Open', 'High', 'Low', 'Close', 'Volume']]
 
         # gld.info()
@@ -44,7 +45,7 @@ class MomentumSignal:
         gld.loc[:, 'return'] = np.log(gld['Close']).diff()
         gld.loc[:, 'system_return'] = gld['signal'] * gld['return']
         gld.loc[:, 'entry'] = gld.signal.diff()
-        print(gld.head())
+        #print(gld.head())
 
         return money_flow_index(gld, 14)
 
