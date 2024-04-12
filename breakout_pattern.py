@@ -71,7 +71,7 @@ class BreakoutSignal:
 
 
         def pointpos(row):
-            zone_width = 2
+            zone_width = 0.05
             if row['isPivot'] == 2:  # Pivot Low
                 return row['Low'] - zone_width
             elif row['isPivot'] == 1:  # Pivot High
@@ -90,8 +90,9 @@ class BreakoutSignal:
             localdf = df.iloc[candle-backcandles-window:candle-window] #window must be greater than pivot window to avoid look ahead bias
             highs = localdf[localdf['isPivot'] == 1].High.tail(3).values
             lows = localdf[localdf['isPivot'] == 2].Low.tail(3).values
+
             levelbreak = 0
-            zone_width = 2
+            zone_width =  0.05
             if len(lows)==3:
                 support_condition = True
                 mean_low = lows.mean()
@@ -111,6 +112,7 @@ class BreakoutSignal:
                         break
                 if resistance_condition and (df.loc[candle].Close-mean_high)>zone_width*2:
                     levelbreak = 2
+
             return levelbreak
 
         #window=10
@@ -124,8 +126,8 @@ class BreakoutSignal:
 
 
         #df['pattern_detected'] = df.apply(lambda row: detect_structure(row.name, backcandles=60, window=11), axis=1)
-        df[df['pattern_detected']!=0]
-        print(df.head())
+        df1 = df['pattern_detected']!=0
+        print(df1)
         return df
 
 
