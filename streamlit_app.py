@@ -78,7 +78,7 @@ def overall_trend(df, instrument, momentum_signal):
     latest_mfi_value = df_instrument['MFI'].iloc[-1]
 
     # Calculate the percentage change
-    percentage_change = ((latest_close_value - singaled_close_value) / singaled_close_value) * 100
+    percentage_change = (((latest_close_value - singaled_close_value) / singaled_close_value) * 100) * (-1)
 
     col1, col2, col3 = st.columns(3)
 
@@ -88,16 +88,24 @@ def overall_trend(df, instrument, momentum_signal):
     else:
         with col1:
             st.write("Major Trend: DOWN")
+
     with col2:
         st.write("Signal: " + format(singaled_close_value, ".2f"))
         st.write("Close: " + format(latest_close_value, ".2f"))
         st.write("MFI: " + format(latest_mfi_value, ".2f"))
 
     with col3:
+        #st.write("percentage_change:", percentage_change)
         if last_valid_value == 1:
-            st.write("percentage change: " + format(percentage_change, ".2f"))
+            if singaled_close_value <= latest_close_value:
+                st.write("Return: " + format(percentage_change, ".2f"))
+            else:
+                st.write("Return: -" + format(percentage_change, ".2f"))
         else:
-            st.write("Return: -" + format(percentage_change, ".2f") + " %")
+            if singaled_close_value >= latest_close_value:
+                st.write("Return: " + format(percentage_change, ".2f"))
+            else:
+                st.write("Return: -" + format(percentage_change, ".2f"))
 
     plt.rcParams['figure.figsize'] = 12, 6
     plt.grid(True, alpha=.3)
